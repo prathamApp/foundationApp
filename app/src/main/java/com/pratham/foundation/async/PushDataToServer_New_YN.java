@@ -74,8 +74,8 @@ import java.util.zip.ZipOutputStream;
 public class PushDataToServer_New_YN {
 
     private Context context;
-    private JSONArray scoreData,attendanceData,studentData, sessionData,supervisorData,groupsData,
-            assessmentData,contentProgressData, keyWordsData,courseEnrollmentData,logsData;
+    private JSONArray scoreData, attendanceData, studentData, sessionData, supervisorData, groupsData,
+            assessmentData, contentProgressData, keyWordsData, courseEnrollmentData, logsData;
     private boolean pushSuccessfull = false;
     private boolean isConnectedToRasp = false;
     private final boolean isRaspberry = false;
@@ -86,7 +86,7 @@ public class PushDataToServer_New_YN {
     private String actPhotoPath = "";
     private final String programID = "";
     private File[] imageFilesArray;
-//    private final List<String> db_Media;
+    //    private final List<String> db_Media;
     private List<Image_Upload> imageUploadList;
     public Gson gson;
     CustomLodingDialog pushDialog;
@@ -197,9 +197,15 @@ public class PushDataToServer_New_YN {
                 for (final Model_CourseEnrollment model_courseEnrollment : courseEnrollList)
                     courseEnrollmentData.put(new JSONObject(gson.toJson(model_courseEnrollment)));
 
-                JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData,
-                        /*supervisorData,*/ logsData, /*assessmentData,*/ studentData, contentProgressData, keyWordsData,
-                        courseEnrollmentData, groupsData);
+/*                if ((scoreData != null && scoreData.length() > 0) && (attendanceData != null && attendanceData.length() > 0)
+                        && (sessionData != null && sessionData.length() > 0) && (logsData != null && logsData.length() > 0)
+                        && (studentData != null && scoreData.length() > 0) && (contentProgressData != null && contentProgressData.length() > 0)
+                        && (keyWordsData != null && keyWordsData.length() > 0) && (courseEnrollmentData != null && courseEnrollmentData.length() > 0)
+                        && (groupsData != null && groupsData.length() > 0))*/
+
+                    JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData,
+                            /*supervisorData,*/ logsData, /*assessmentData,*/ studentData, contentProgressData, keyWordsData,
+                            courseEnrollmentData, groupsData);
 
                 pushSuccessfull = false;
                 //iterate through all new sessions
@@ -309,7 +315,7 @@ public class PushDataToServer_New_YN {
             eject_btn.setVisibility(View.GONE);
 
             ok_btn.setOnClickListener(v -> {
-                if(pushSuccessfull)
+                if (pushSuccessfull)
                     setPushFlag();
                 getImageList();
 //                else
@@ -395,7 +401,7 @@ public class PushDataToServer_New_YN {
                                 Gson gson = new Gson();
                                 FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-//                                new File(filePathStr + ".zip").delete();
+                                new File(filePathStr + ".zip").delete();
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
@@ -406,7 +412,7 @@ public class PushDataToServer_New_YN {
                                 //Fail - Show dialog with failure message.
                                 Log.d("PushData", "Data push FAIL");
                                 Log.d("PushData", "ERROR  " + anError);
-//                                new File(filePathStr + ".zip").delete();
+                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -427,7 +433,7 @@ public class PushDataToServer_New_YN {
                                 Gson gson = new Gson();
                                 SyncLog pushResponse = gson.fromJson(response, SyncLog.class);
 
-//                                new File(filePathStr + ".zip").delete();
+                                new File(filePathStr + ".zip").delete();
                                 if (pushResponse.getPushId() != 0) {
                                     Log.d("PushData", "DATA PUSH SUCCESS");
                                     pushSuccessfull = true;
@@ -443,7 +449,7 @@ public class PushDataToServer_New_YN {
                             public void onError(ANError anError) {
                                 Log.d("PushData", "Data push FAIL");
                                 Log.d("PushData", "ERROR  " + anError);
-//                                new File(filePathStr + ".zip").delete();
+                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -658,7 +664,7 @@ public class PushDataToServer_New_YN {
      */
     @UiThread
     public void pushImagesToServer_Internet(final int jsonIndex) {
-        String img_api= ""+FC_Constants.PUSH_IMAGE_API+FC_Constants.APK_VERSION_STR+FC_Utility.getAppVerison();
+        String img_api = "" + FC_Constants.PUSH_IMAGE_API + FC_Constants.APK_VERSION_STR + FC_Utility.getAppVerison();
         Log.d("PushData", "Image jsonIndex : " + img_api);
         if (jsonIndex < imageUploadList.size()) {
             AndroidNetworking.upload(img_api)
@@ -672,17 +678,17 @@ public class PushDataToServer_New_YN {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                Log.d("PushData", "Image onResponse : " + response);
-//                                Gson gson = new Gson();
+                                Gson gson = new Gson();
                                 PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
-//                                if (response.contains("UPLOADED")/*contains(",\"ErrorId\":\"1\",")*/) {
-                                if (pushResponse.getStatus().equalsIgnoreCase("UPLOADED")/*contains(",\"ErrorId\":\"1\",")*/) {
+                                Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
+                                Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());
+                                if (!pushResponse.getStatus().equalsIgnoreCase("FAILED")) {
                                     imageUploadCnt++;
-                                    Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
-                                    Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());
                                     imageUploadList.get(jsonIndex).setUploadStatus(true);
-                                    pushImagesToServer_Internet(jsonIndex + 1);
+                                }else{
+                                    imageUploadList.get(jsonIndex).setUploadStatus(false);
                                 }
+                                pushImagesToServer_Internet(jsonIndex + 1);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -863,7 +869,7 @@ public class PushDataToServer_New_YN {
 
     //In this method data from json array and from local database is fetched and passed to jsonobject.
     private JSONObject generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData,
-                                             /*JSONArray supervisorData,*/ JSONArray logsData, /*JSONArray assessmentData,*/
+            /*JSONArray supervisorData,*/ JSONArray logsData, /*JSONArray assessmentData,*/
                                              JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData,
                                              JSONArray courseEnrollmentData, JSONArray groupsData) {
 

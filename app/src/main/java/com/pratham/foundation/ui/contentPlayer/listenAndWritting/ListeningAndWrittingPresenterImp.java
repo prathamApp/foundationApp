@@ -1,9 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 import android.content.Context;
 
@@ -11,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -166,8 +163,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     newResId = GameConstatnts.getString(resId, contentTitle, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
-                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
-                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
+                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, newResId);
+//                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, "false");
                     addImageOnly(resId, imageName);
                 }
                 setCompletionPercentage();
@@ -196,10 +193,11 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
                     || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
                     : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
-            score.setStartDateTime(imageName);
+            score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FC_Constants.currentLevel);
+            score.setMiscellaneous(imageName);
             score.setLabel(IMG_PUSH_LBL);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
@@ -258,7 +256,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     }
 
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, boolean addInAssessment) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, String misc) {
         try {
             String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -277,11 +275,12 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, currentLevel));
+            score.setMiscellaneous(misc);
             score.setLabel(Label);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
+/*            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -297,7 +296,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
-            }
+            }*/
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

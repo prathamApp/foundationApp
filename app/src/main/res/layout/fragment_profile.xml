@@ -824,6 +824,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_weight="1"
+                        android:visibility="gone"
                         android:background="?attr/selectableItemBackground">
 
                         <ImageView

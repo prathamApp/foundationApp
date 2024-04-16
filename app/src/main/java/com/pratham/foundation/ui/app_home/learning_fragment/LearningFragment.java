@@ -238,6 +238,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                         message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.DATA_REFRESHED)) {
                     fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.USAGE_PERCENTAGE)) {
+                    String currentNodeID = presenter.getcurrentNodeID();
+                    presenter.findMaxScore(currentNodeID);
+
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.RESPONSE_CODE_ERROR)) {
@@ -306,7 +310,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }*/
     }
 
-    private void fragmentSelected() {
+    private void
+    fragmentSelected() {
 /*
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo Info = cm.getActiveNetworkInfo();

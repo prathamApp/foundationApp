@@ -24,7 +24,7 @@ public class FC_Constants {
 
     public static final String CHECK_SERVER_STATUS= "check_server_status";
 //    public static final String CHECK_SERVER_STATUS_API= "http://prathamyouthnet.org/ssmspushdb/dbcheck_api_status.php";
-    public static final String CHECK_SERVER_STATUS_API= "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbcheck_api_status.php";
+    public static final String CHECK_SERVER_STATUS_API= "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbcheck_api_status.php";
     public static final String OLD_PUSH_DONE= "old_push_done";
     public static final String SYNC_LBL= "SYNC_LBL";
     public static final String DETAILS_LBL = "DETAILS_LBL";
@@ -35,20 +35,20 @@ public class FC_Constants {
     public static final String STUDENT_SYNC_DATA = "student_sync_data";
     public static final String SYNC_SUMMARY_DATA = "sync_summary_data";
 //    public static final String SYNC_SUMMARY_DATA_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-main.php?DateFrom=";
-    public static final String SYNC_SUMMARY_DATA_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-main.php?DateFrom=";
+    public static final String SYNC_SUMMARY_DATA_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbsummary-main.php?DateFrom=";
     public static final String SYNC_ACCESSED_USERS = "sync_accessed_users";
 //    public static final String SYNC_ACCESSED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-accessed.php?DateFrom=";
-    public static final String SYNC_ACCESSED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-accessed.php?DateFrom=";
+    public static final String SYNC_ACCESSED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbsummary-accessed.php?DateFrom=";
     public static final String SYNC_REGISTERED_USERS = "sync_registered_users";
 //    public static final String SYNC_REGISTERED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-regd.php?DateFrom=";
-    public static final String SYNC_REGISTERED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-regd.php?DateFrom=";
+    public static final String SYNC_REGISTERED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbsummary-regd.php?DateFrom=";
     public static final String SYNC_STUDENTS_DETAILS = "sync_students_details";
 //    public static final String SYNC_STUDENTS_DETAILS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-details.php?DateFrom=";
-    public static final String SYNC_STUDENTS_DETAILS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-details.php?DateFrom=";
+    public static final String SYNC_STUDENTS_DETAILS_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbsummary-details.php?DateFrom=";
 //    public static String TEST_RESULT_API = "http://prathamyouthnet.org/ssmspushdb/dbcheck.php?PushId=";
-    public static String TEST_RESULT_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbcheck.php?PushId=";
+    public static String TEST_RESULT_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbcheck.php?PushId=";
 //    public static String TEST_SYNC_API = "http://prathamyouthnet.org/ssmspushdb/dbsync-individual.php?PushId=";
-    public static String TEST_SYNC_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsync-individual.php?PushId=";
+    public static String TEST_SYNC_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbsync-individual.php?PushId=";
 
     //wifi constants
     public static final int ApScanResult = 201;
@@ -241,6 +241,7 @@ public class FC_Constants {
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
     public static final String CERTI_CODE = "certi_code";
     public static final String ACTIVITY_RESUMED = "activity_resumed";
+    public static final String USAGE_PERCENTAGE = "usage_percentage";
     public static final String BUILD_DATE_FLG = "build_date_flg";
     public static final String LATEST_APP = "latest_app";
     public static final String SERVER_APP_VERSION = "server_app_version";
@@ -336,22 +337,25 @@ public class FC_Constants {
 
 //    New APIS
 //    public static final String NEW_PUSH_API = "https://prathamyouthnet.org/ssmspushdb/dbpush.php";
-    public static final String NEW_PUSH_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbpush.php";
-    public static final String PUSH_IMAGE_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbmedia.php";
+    public static final String NEW_PUSH_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbpush.php";
+    public static final String PUSH_IMAGE_API = "https://appsync.prathamyouthnet.org/pfs/v1.1.2/dbmedia.php";
 
 
     //    PRATHAM APIS
 //    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
-    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/FCAPP/PushFiles";
+    public static String uploadDataUrl = "https://devprodigi.openiscool.org/api/FCAPP/PushFiles";
     public static String uploadDataUrl_PI = "http://192.168.4.1:8000/api/usagedata/";
     public static String uploadDataBaseUrl_PI = "http://192.168.4.1:8000/api/dbpushdata/";
-    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
+//  Testing
+//    public static final String STUDENT_BY_ENROLLMENT_NO_API = "https://devtab.prathamschool.org/api/Enrollement/Get?enrollmentno=";
+    public static final String STUDENT_BY_ENROLLMENT_NO_API = "https://devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
 //    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String PUSH_IMAGE_API_PI = "http://192.168.4.1:8000/api/channel/FileUpload/";
     public static final String INTERNET_TIME_API = "http://worldtimeapi.org/api/timezone/Asia/Kolkata";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
     public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
-    public static final String DB_ZIP_PUSH_API = "http://devprodigi.openiscool.org/api/PradigiSchoolDB/PushFiles";
+    public static final String DB_ZIP_PUSH_API = "https://devprodigi.openiscool.org/api/PradigiSchoolDB/PushFiles";
+//    public static final String DB_ZIP_PUSH_API = "http://devprodigi.openiscool.org/api/PradigiSchoolDB/PushFiles";
 
 //    http://192.168.4.1:8000/api/channel/AppNodeJsonListByNode/?NodeId=SCAPP_55016&JsonType=Browse
 //    public static final String RASPBERRY_PI_LANGUAGE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/?ParentId=";
@@ -360,6 +364,10 @@ public class FC_Constants {
     public static final String TEMP_RASPBERRY_PI_BROWSE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API_PI = "http://192.168.4.1:8000/api/channel/AppNodeJsonListByNode/?NodeId=";
 
+    //Testing
+/*    public static final String INTERNET_LANGUAGE_API = "https://devposapi.prathamschool.org/api/ContentV2/browse?id=";
+    public static final String INTERNET_BROWSE_API = "https://devposapi.prathamschool.org/api/ContentV2/BrowseLevel2?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "https://devposapi.prathamschool.org/api/content/downloadv2?id=";*/
     public static final String INTERNET_LANGUAGE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
     public static final String INTERNET_BROWSE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "https://devposapi.prathamopenschool.org/api/content/downloadv2?id=";

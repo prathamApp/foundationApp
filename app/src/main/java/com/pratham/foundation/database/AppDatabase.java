@@ -55,14 +55,14 @@ import com.pratham.foundation.modalclasses.SyncStatusLog;
         SupervisorData.class, Assessment.class, Modal_Log.class, ContentTable.class,
         ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class,
         Model_CourseEnrollment.class, SyncLog.class, SyncStatusLog.class},
-        version = 4, exportSchema = false)
+        version = 5, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase appDBInstance;
 
     public static final String DB_NAME = "foundation_db";
-    public static final String DB_VERSION = "4";
+    public static final String DB_VERSION = "5";
 
     public abstract CrlDao getCrlDao();
 
@@ -106,7 +106,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (appDBInstance == null) {
             appDBInstance = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                     .build();
             return appDBInstance;
         } else
@@ -171,6 +171,13 @@ public abstract class AppDatabase extends RoomDatabase {
                     "'GroupsDataCount' INTEGER NOT NULL, 'GroupsDataSynced' INTEGER NOT NULL, 'GroupsDataError' INTEGER NOT NULL," +
                     "'LastChecked' TEXT, 'Error' TEXT, " +
                     "'sentFlag' INTEGER NOT NULL DEFAULT 0)");
+        }
+    };
+    static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            Log.d("AppDatabase", "MIGRATION_4_5:                                  4");
+            database.execSQL("ALTER TABLE 'Score' ADD COLUMN 'Miscellaneous' Text DEFAULT ' '");
         }
     };
 

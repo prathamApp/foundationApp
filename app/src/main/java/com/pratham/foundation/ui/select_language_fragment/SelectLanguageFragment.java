@@ -11,7 +11,10 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +56,8 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     LottieAnimationView btn_back;
     @ViewById(R.id.rv_lang)
     RecyclerView recyclerView;
+    @ViewById(R.id.board_spinner)
+    Spinner board_spinner;
 
     List<ContentTable> contentTableList;
     private ContentAdapter contentAdapter;
@@ -73,7 +78,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
         contentTableList = new ArrayList<>();
         presenter.setView(SelectLanguageFragment.this);
         showLoader();
-        presenter.getLanguage();
+        presenter.getBoard();
     }
 
     @Override
@@ -92,6 +97,35 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
         FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE_NODE_ID, "" + languageNodeId);
         FC_Utility.setAppLocal(context,language);
         btn_back.performClick();
+    }
+
+    private List<ContentTable> boardList;
+    @UiThread
+    @Override
+    public void setBoardList(List<ContentTable> boardList) {
+        try {
+            this.boardList = boardList;
+            List<String> prgrms = new ArrayList<>();
+            for (ContentTable mp : boardList) {
+                prgrms.add(mp.getNodeTitle());
+            }
+            ArrayAdapter arrayStateAdapter = new ArrayAdapter(context, R.layout.custom_spinner2, prgrms);
+            arrayStateAdapter.setDropDownViewResource(R.layout.custom_spinner2);
+            board_spinner.setAdapter(arrayStateAdapter);
+            board_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedBoardId = boardList.get(position).getNodeId();
+                    presenter.loadLanguages(selectedBoardId);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread

@@ -1,8 +1,70 @@
 package com.pratham.foundation.async;
 
-import org.androidannotations.annotations.EBean;
+/*import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-@EBean
+import com.airbnb.lottie.LottieAnimationView;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.Attendance;
+import com.pratham.foundation.database.domain.ContentProgress;
+import com.pratham.foundation.database.domain.Crl;
+import com.pratham.foundation.database.domain.FilePushResponse;
+import com.pratham.foundation.database.domain.Groups;
+import com.pratham.foundation.database.domain.KeyWords;
+import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.database.domain.PushResponse;
+import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.database.domain.Session;
+import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.database.domain.SupervisorData;
+import com.pratham.foundation.modalclasses.Image_Upload;
+import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
+import com.pratham.foundation.modalclasses.SyncLog;
+import com.pratham.foundation.services.background_service.BackgroundPushService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_RandomString;
+import com.pratham.foundation.utility.FC_Utility;
+
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;*/
+
+//@EBean
 public class PushDataToServer_New {
 
 //    private Context context;
@@ -72,7 +134,7 @@ public class PushDataToServer_New {
 //            if (showUi)
 //                showPushDialog(context);
 //            //Here data is fetched from local database and added to a list and then passed to JsonArray.
-//            syncTime = FC_Utility.getCurrentDateTime();
+//            FC_Constants.syncTime = FC_Utility.getCurrentDateTime();
 //            try {
 //                setGreenColorMainTextToDialog();
 //                setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
@@ -128,8 +190,8 @@ public class PushDataToServer_New {
 //            mYourService = new BackgroundPushService();
 //            Intent mServiceIntent;
 //            mServiceIntent = new Intent(context, mYourService.getClass());
-//            FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, true);
-//            Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(IS_SERVICE_STOPED, false));
+//            FastSave.getInstance().saveBoolean(FC_Constants.IS_SERVICE_STOPED, true);
+//            Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(FC_Constants.IS_SERVICE_STOPED, false));
 //            if (isMyServiceRunning(mYourService.getClass()))
 //                context.stopService(mServiceIntent);
 //
@@ -384,7 +446,7 @@ public class PushDataToServer_New {
 //                        Log.d("PushData", "DATA PUSH " + response);
 //                        Gson gson = new Gson();
 //                        SyncLog pushResponse = gson.fromJson(response, SyncLog.class);
-////                        new File(filePathStr + ".zip").delete();
+//                        new File(filePathStr + ".zip").delete();
 //                        if (pushResponse.getPushId() != 0) {
 //                            Log.d("PushData", "DATA PUSH SUCCESS");
 ////                                    ShowResponse(pushResponse, response);
@@ -401,7 +463,7 @@ public class PushDataToServer_New {
 //                    public void onError(ANError anError) {
 //                        Log.d("PushData", "Data push FAIL");
 //                        Log.d("PushData", "ERROR  " + anError);
-////                        new File(filePathStr + ".zip").delete();
+//                        new File(filePathStr + ".zip").delete();
 //                        pushSuccessfull = false;
 //                        secondPushFlg = true;
 //                        setDataPushFailed();
@@ -477,7 +539,7 @@ public class PushDataToServer_New {
 //        log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 //        log.setGroupId("");
 //        log.setLogDetail("" + response);
-//        log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+//        log.setExceptionStackTrace("APK BUILD DATE : " + ApplicationClass.BUILD_DATE);
 //        log.setDeviceId("" + FC_Utility.getDeviceID());
 //        log.setSentFlag(0);
 //
@@ -634,16 +696,17 @@ public class PushDataToServer_New {
 //                        public void onResponse(String response) {
 //                            try {
 //                                Log.d("PushData", "Image onResponse : " + response);
-////                                Gson gson = new Gson();
-////                                PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
-//                                if (response.equalsIgnoreCase("success")/*contains(",\"ErrorId\":\"1\",")*/) {
-////                                if (pushResponse.getErrorId().equalsIgnoreCase("1")/*contains(",\"ErrorId\":\"1\",")*/) {
+//                                Gson gson = new Gson();
+//                                PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
+//                                Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
+//                                Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());
+//                                if (!pushResponse.getStatus().equalsIgnoreCase("FAILED")) {
 //                                    imageUploadCnt++;
-//                                    Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
-//                                    Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());
 //                                    imageUploadList.get(jsonIndex).setUploadStatus(true);
-//                                    pushImagesToServer_Internet(jsonIndex + 1);
+//                                }else{
+//                                    imageUploadList.get(jsonIndex).setUploadStatus(false);
 //                                }
+//                                pushImagesToServer_Internet(jsonIndex + 1);
 //                            } catch (Exception e) {
 //                                e.printStackTrace();
 //                            }
@@ -720,17 +783,17 @@ public class PushDataToServer_New {
 //        }
 //
 //        if (pushSuccessfull)
-//            pushedScoreLength = "" + scoreData.length();
+//            FC_Constants.pushedScoreLength = "" + scoreData.length();
 //        else
-//            pushedScoreLength = "0";
-//        successful_ImageLength = "" + successfulCntr;
-//        failed_ImageLength = "" + failedCntr;
+//            FC_Constants.pushedScoreLength = "0";
+//        FC_Constants.successful_ImageLength = "" + successfulCntr;
+//        FC_Constants.failed_ImageLength = "" + failedCntr;
 ////        syncTime = FC_Utility.getCurrentDateTime();
 //
-//        FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
+//        FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, FC_Constants.syncTime);
 //        FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "" + enrollmentCount);
-//        FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
-//        FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+//        FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, FC_Constants.pushedScoreLength);
+//        FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, FC_Constants.successful_ImageLength);
 //
 //        int totalScoreCount, totalSuccessfullScorePush, totalImgCount, totalSuccessfulImgCount, totalCourses, totalCoursesSuccessful;
 //
@@ -746,10 +809,10 @@ public class PushDataToServer_New {
 //        try {
 //            JSONObject pushStatusJson = null;
 //            pushStatusJson = new JSONObject();
-//            pushStatusJson.put(FC_Constants.SYNC_TIME, syncTime);
+//            pushStatusJson.put(FC_Constants.SYNC_TIME, FC_Constants.syncTime);
 //            pushStatusJson.put(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, enrollmentCount);
-//            pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
-//            pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+//            pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, FC_Constants.pushedScoreLength);
+//            pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, FC_Constants.successful_ImageLength);
 //            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush + "/" + totalScoreCount);
 //            pushStatusJson.put("MediaCount", totalSuccessfulImgCount + "/" + totalImgCount);
 //            pushStatusJson.put("CoursesCount", totalCoursesSuccessful + "/" + totalCourses);
@@ -762,14 +825,14 @@ public class PushDataToServer_New {
 //            log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
 //            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 //            log.setGroupId("");
-//            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+//            log.setExceptionStackTrace("APK BUILD DATE : " + ApplicationClass.BUILD_DATE);
 //            if (pushSuccessfull)
 //                log.setErrorType("" + FC_Constants.SUCCESSFULLYPUSHED);
 //            else
 //                log.setErrorType("" + FC_Constants.PUSHFAILED);
 //            log.setLogDetail("" + pushStatusJson);
 //            log.setDeviceId("" + FC_Utility.getDeviceID());
-//            log.setCurrentDateTime("" + syncTime);
+//            log.setCurrentDateTime("" + FC_Constants.syncTime);
 //            log.setSentFlag(0);
 //            AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
 //
@@ -803,8 +866,8 @@ public class PushDataToServer_New {
 //        mYourService = new BackgroundPushService();
 //        Intent mServiceIntent;
 //        mServiceIntent = new Intent(context, mYourService.getClass());
-//        FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, true);
-//        Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(IS_SERVICE_STOPED, false));
+//        FastSave.getInstance().saveBoolean(FC_Constants.IS_SERVICE_STOPED, true);
+//        Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(FC_Constants.IS_SERVICE_STOPED, false));
 //        if (isMyServiceRunning(mYourService.getClass()))
 //            context.stopService(mServiceIntent);
 //

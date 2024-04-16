@@ -39,8 +39,9 @@ public class ImageQuesPresenter implements ImageQuesContract.ImageQuesPresenter 
 //            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
 //                    .getImageQuesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
 //        else
-            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
-                    .getImageQues(StudId, FC_Constants.IMG_LBL);
+        scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
+                .getImageQues2(StudId, "%ansImageName%");
+//                .getImageQues(StudId, FC_Constants.IMG_LBL);
 
         if(scoreList!=null && scoreList.size()>0)
             imageQuesView.addToAdapter(scoreList);

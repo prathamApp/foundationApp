@@ -12,7 +12,7 @@ public interface DoingFragmentContract {
 
         void getData(String readingContentPath);
 
-        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label,String resId, boolean addInAssessment);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label,String resId, String misc);
 
         void addLearntWords(ScienceQuestion questionModel, String imageName);
     }

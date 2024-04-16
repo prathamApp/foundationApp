@@ -1,279 +1,133 @@
 package com.pratham.foundation.ui.app_home.profile_new.temp_sync;
 
 
-import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
-import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Modal_Log;
-import com.pratham.foundation.modalclasses.SyncLog;
-import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
 
-import java.io.File;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 @EActivity(R.layout.activity_temp_sync)
 public class TempSync extends BaseActivity {
 
-    public static String TEST_SYNC_API = "http://prathamyouthnet.org/ssmspushdb/dbpush.php";
-//    static String btn_1 = "0a6f4e3f-6669-45ed-92cc-66c34a1a2bdf";
-    static String btn_1 = "FC_933552fb35f51447ce2f37e82dcf6267";
-    static String btn_2 = "FC_c14bcab0f968a514c5cf80a92ee51bd9";
-    static String btn_3 = "0a6f4e3f-6669-45ed-92cc-66c34a1a2bdf";
-    static String btn_4 = "795dabc6-69a6-4c4d-802e-ba1942ab81a6";
-    static String btn_5 = "61bd569f-7c85-453e-94c4-bb3672937b72";
-    static String btn_6 = "6063a838-79e8-4b51-8f5c-1f785745d069";
-    static String btn_7 = "60747e93-eccb-4534-8eec-0676737f5a95";
-    static String btn_8 = "cda70be4-b1e5-47ab-a6be-f7edefba53ae";
-    static String btn_9 = "d29d1568-aa9d-414c-8184-6bd696ecdd2f";
-    static String btn_10 = "dbbcdf7f-b039-4d1d-8054-e06e7be91991";
+    private static final String TAG = "TextProcessing";
+    private static final String checklistFilePath = "checklist.json";
 
     @AfterViews
     public void initiate() {
-
     }
+
 
     @Click(R.id.goto_results)
-    public void gotoResults() {
-        startActivity(new Intent(this, SyncResultActivity_.class));
-    }
-
-    @Click(R.id.button_1)
     public void button1Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_1;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_2)
-    public void button2Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_2;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_3)
-    public void button3Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_3;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_4)
-    public void button4Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_4;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_5)
-    public void button5Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_5;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_6)
-    public void button6Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_6;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_7)
-    public void button7Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_7;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_8)
-    public void button8Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_8;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_9)
-    public void button9Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_9;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
-    }
-    @Click(R.id.button_10)
-    public void button10Click() {
-        showLoader();
-        String url = ApplicationClass.getStoragePath().toString()+ "/FCAInternal/"+btn_10;
-//        Toast.makeText(this, ""+url, Toast.LENGTH_SHORT).show();
-        PushData(url);
+        String originalText = "गिर रात हो गई। चाँद दिख रहा था। तेरे भी तारे भी चमक रहे हैं। सब लोग सो गए ह";
+        String recognitionOutput = "रात हो गई, चांद दिख रहा था। तेरे भी तारे भी चमक रहे हैं। सब लोग सो गए हैं। ऐसे मत भी गल";
+
+        Map<String, Object> result = new HashMap<>();
+        result = TextProcessing.identifyMistakes(originalText,recognitionOutput);
+/*        String[] originalWords = originalText.split("\\s+");
+        String[] recognitionWords = recognitionOutput.split("\\s+");
+*//*        int[] result = calculateLevenshteinDistance(originalWords, recognitionWords);
+        int insertions = result[0];
+        int substitutions = result[1];
+        int deletions = result[2];
+        System.out.println("Insertions: " + insertions);
+        System.out.println("Substitutions: " + substitutions);
+        System.out.println("Deletions: " + deletions);*//*
+        String[] words1 = "hello world".split("\\s+");
+        String[] words2 = "hola world".split("\\s+");
+
+        int distance = calculateWordLevelLevenshteinDistance(originalWords, recognitionWords);
+        System.out.println("Word Level Levenshtein Distance: " + distance);*/
+
     }
 
-    @UiThread
-    public void PushData(String filePathStr) {
-        try {
-            if(new File(filePathStr + ".zip").exists()) {
-                AndroidNetworking.upload(TEST_SYNC_API)
-                        .addHeaders("Content-Type", "file/zip")
-                        .addMultipartFile("fileJson", new File(filePathStr + ".zip"))
-                        .setPriority(Priority.HIGH)
-                        .build()
-                        .getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("PushData", "DATA PUSH " + response);
-                                Gson gson = new Gson();
-                                SyncLog pushResponse = gson.fromJson(response, SyncLog.class);
+    public static int calculateWordLevelLevenshteinDistance(String[] words1, String[] words2) {
+        int lenWords1 = words1.length + 1;
+        int lenWords2 = words2.length + 1;
 
-                                if(pushResponse.getPushId()!=0) {
-                                    Log.d("PushData", "DATA PUSH SUCCESS");
-                                    ShowResponse(pushResponse, response);
-                                }else{
-                                    setDataPushFailed();
-                                }
-                            }
+        // Create a matrix to store the distances between words
+        int[][] matrix = new int[lenWords1][lenWords2];
 
-                            @Override
-                            public void onError(ANError anError) {
-                                Log.d("PushData", "Data push FAIL");
-                                Log.d("PushData", "ERROR  " + anError);
-                                setDataPushFailed();
-                            }
-                        });
-            }else{
-                Toast.makeText(this, "File not Found", Toast.LENGTH_SHORT).show();
-                dismissLoadingDialog();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Initialize the matrix with initial values
+        for (int i = 0; i < lenWords1; i++) {
+            matrix[i][0] = i;
         }
-    }
-
-    CustomLodingDialog sttDialog;
-    @UiThread
-    public void ShowResponse(SyncLog pushResponse, String response) {
-        dismissLoadingDialog();
-        AppDatabase.getDatabaseInstance(this).getSyncLogDao().insert(pushResponse);
-        sttDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        sttDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(sttDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        sttDialog.setContentView(R.layout.sync_new_test_dialog);
-        sttDialog.setCanceledOnTouchOutside(true);
-
-        TextView dia_title = sttDialog.findViewById(R.id.dia_title);
-        Button dia_btn_ok = sttDialog.findViewById(R.id.dia_btn_ok);
-
-        String err= "";
-        if(!pushResponse.getError().equalsIgnoreCase("") && !pushResponse.getError().equalsIgnoreCase(" "))
-            err = "ERROR : " +pushResponse.getError();
-
-
-        dia_title.setText("PushID : " + pushResponse.getPushId() +"\n\n"
-                + "UUID : " + pushResponse.getUuid() +"\n\n"
-                + "Push Date : " + pushResponse.getPushDate() +"\n\n"
-                + "Push Status : " + pushResponse.getStatus() +"\n\n"
-                + err );
-
-        dia_btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Handler().postDelayed(() -> {
-                    sttDialog.dismiss();
-                    addResponse(pushResponse, response);
-                }, 100);
-
-            }
-        });
-        sttDialog.show();
-    }
-
-    @UiThread
-    public void addResponse(SyncLog pushResponse, String response) {
-        Modal_Log log = new Modal_Log();
-
-        log.setCurrentDateTime(pushResponse.getPushDate());
-        log.setExceptionMessage("TEMP_SYNC_RESPONSE");
-        log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
-        log.setMethodName(""+ pushResponse.getPushId());
-        log.setErrorType("");
-        log.setGroupId("");
-        log.setDeviceId("" + FC_Utility.getDeviceID());
-        log.setLogDetail(""+response);
-        log.setSentFlag(0);
-        log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-
-        Log.d("PushData", "pushStatusJson JSON : " + pushResponse);
-        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
-        BackupDatabase.backup(this);
-    }
-
-    public void setDataPushSuccessfull(SyncLog pushResponse) {
-
-    }
-
-    public void setDataPushFailed() {
-        dismissLoadingDialog();
-    }
-
-    private boolean loaderVisible = false;
-    private CustomLodingDialog myLoadingDialog;
-
-    @UiThread
-    public void showLoader() {
-        if (!loaderVisible) {
-            loaderVisible = true;
-            myLoadingDialog = new CustomLodingDialog(this);
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            Objects.requireNonNull(myLoadingDialog.getWindow()).
-                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
-//        myLoadingDialog.setCancelable(false);
-            myLoadingDialog.show();
-            loaderVisible = true;
+        for (int j = 0; j < lenWords2; j++) {
+            matrix[0][j] = j;
         }
+
+        // Fill in the matrix with minimum edit distances
+        for (int i = 1; i < lenWords1; i++) {
+            for (int j = 1; j < lenWords2; j++) {
+                int cost = words1[i - 1].equals(words2[j - 1]) ? 0 : 1;
+                matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,          // Deletion
+                        Math.min(
+                                matrix[i][j - 1] + 1,      // Insertion
+                                matrix[i - 1][j - 1] + cost // Substitution
+                        )
+                );
+            }
+        }
+
+        return matrix[lenWords1 - 1][lenWords2 - 1];
     }
 
-    @UiThread
-    public void dismissLoadingDialog() {
-        try {
-            if (loaderVisible) {
-                loaderVisible = false;
-                new Handler().postDelayed(() -> {
-                    if (myLoadingDialog != null && myLoadingDialog.isShowing())
-                        myLoadingDialog.dismiss();
-                }, 150);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    private static int[] calculateLevenshteinDistance(String[] s1, String[] s2) {
+        int len1 = s1.length + 1;
+        int len2 = s2.length + 1;
+        int[][] matrix = new int[len1][len2];
+        for (int i = 0; i < len1; i++) {
+            matrix[i][0] = i;
         }
+        for (int j = 0; j < len2; j++) {
+            matrix[0][j] = j;
+        }
+        for (int i = 1; i < len1; i++) {
+            for (int j = 1; j < len2; j++) {
+                int cost = (s1[i - 1].equals(s2[j - 1])) ? 0 : 1;
+                matrix[i][j] = Math.min(matrix[i - 1][j] + 1,           // Deletion
+                        Math.min(matrix[i][j - 1] + 1,                   // Insertion
+                                matrix[i - 1][j - 1] + cost));          // Substitution
+            }
+        }
+        int[] result = new int[3];
+        result[0] = matrix[len1 - 1][len2 - 1];  // Insertions
+        result[1] = countSubstitutions(matrix, s1, s2);  // Substitutions
+        result[2] = countDeletions(matrix, s1, s2);  // Deletions
+        return result;
+    }
+    private static int countSubstitutions(int[][] matrix, String[] s1, String[] s2) {
+        int count = 0;
+        int i = matrix.length - 1;
+        int j = matrix[0].length - 1;
+        while (i > 0 && j > 0) {
+            int cost = (s1[i - 1].equals(s2[j - 1])) ? 0 : 1;
+            if (matrix[i][j] == matrix[i - 1][j - 1] + cost) {
+                count += cost;
+            }
+            i--;
+            j--;
+        }
+        return count;
+    }
+    private static int countDeletions(int[][] matrix, String[] s1, String[] s2) {
+        int count = 0;
+        int i = matrix.length - 1;
+        int j = matrix[0].length - 1;
+        while (i > 0) {
+            if (matrix[i][j] == matrix[i - 1][j] + 1) {
+                count++;
+            }
+            i--;
+        }
+        return count;
     }
 
 }

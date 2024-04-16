@@ -6,21 +6,21 @@ import java.util.List;
 
 
 public interface ParagraphWritingContract {
-    public interface ParagraphWritingView {
-        public void showParagraph(List<ScienceQuestion> questionModel);
+    interface ParagraphWritingView {
+        void showParagraph(List<ScienceQuestion> questionModel);
     }
 
-    public interface ParagraphWritingPresenter {
-        public void getData();
+    interface ParagraphWritingPresenter {
+        void getData();
 
-        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label,String resId, boolean addInAssessment);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, String Misc);
 
        // public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
 
-        public void addLearntWords(List<ScienceQuestion> questionModel);
+        void addLearntWords(List<ScienceQuestion> questionModel);
 
-        public void setView(ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath,String jsonName,String contentTitle);
+        void setView(ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath, String jsonName, String contentTitle);
 
-        public boolean checkIsAttempted(ScienceQuestion scienceQuestion);
+        boolean checkIsAttempted(ScienceQuestion scienceQuestion);
     }
 }

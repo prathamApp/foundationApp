@@ -8,19 +8,19 @@ import java.util.List;
 
 
 public interface WordWritingContract {
-    public interface WordWritingView {
-        public void showParagraph(List<ScienceQuestion> questionModel);
+    interface WordWritingView {
+        void showParagraph(List<ScienceQuestion> questionModel);
     }
 
 
-    public interface WordWritingPresenter {
-        public void getData();
+    interface WordWritingPresenter {
+        void getData();
 
-        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label,String resId,boolean addInAssessment);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, String misc);
 
-        public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
+        void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
 
-        public void addLearntWords(List<ScienceQuestion> questionModel, String imageName);
+        void addLearntWords(List<ScienceQuestion> questionModel, String imageName);
 
         void setView(WordWritingContract.WordWritingView wordWritingView, String imageName, String readingContentPath,String contentTitle);
     }

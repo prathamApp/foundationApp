@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.app_home;
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ApplicationClass.getAppMode;
-import static com.pratham.foundation.utility.FC_Constants.ACTIVITY_RESUMED;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
@@ -15,6 +14,7 @@ import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.SECTION_COMPLETION_PERC;
+import static com.pratham.foundation.utility.FC_Constants.USAGE_PERCENTAGE;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
@@ -385,8 +385,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @Override
     protected void onResume() {
         super.onResume();
+//        EventMessage eventMessage = new EventMessage();
+//        eventMessage.setMessage(ACTIVITY_RESUMED);
+//        EventBus.getDefault().post(eventMessage);
         EventMessage eventMessage = new EventMessage();
-        eventMessage.setMessage(ACTIVITY_RESUMED);
+        eventMessage.setMessage(USAGE_PERCENTAGE);
         EventBus.getDefault().post(eventMessage);
     }
 

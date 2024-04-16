@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list;
 
+import static com.pratham.foundation.utility.FC_Utility.getSectionName;
+import static com.pratham.foundation.utility.FC_Utility.getSubjectNameFromNum;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,14 +26,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Utility.getSectionName;
-import static com.pratham.foundation.utility.FC_Utility.getSubjectNameFromNum;
-
 public class ImageQuesAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
+    private final Context mContext;
     private int lastPos = -1;
-    private List<Score> scoreList;
+    private final List<Score> scoreList;
     ImageQuesContract.ImageQuesItemClicked ImageQuesItemClicked;
 
     public ImageQuesAdapter(Context mContext, List<Score> scoreList,
@@ -76,7 +76,7 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
         final Score contentItem = scoreList.get(position);
         ImageJsonObject imageJsonObject;
         try {
-            JSONObject jsonObj = new JSONObject(contentItem.getResourceID());
+            JSONObject jsonObj = new JSONObject(contentItem.getMiscellaneous());
             Gson gson = new Gson();
             imageJsonObject = gson.fromJson(jsonObj.toString(), ImageJsonObject.class);
 

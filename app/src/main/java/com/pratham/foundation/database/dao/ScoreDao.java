@@ -63,16 +63,16 @@ public interface ScoreDao {
     @Query("update Score set sentFlag=1 where sentFlag=0 AND Label!='img_push_lbl'")
     void setSentFlag();
 
-    @Query("Select sentFlag from Score where StartDateTime=:imgName AND Label='img_push_lbl'")
+    @Query("Select sentFlag from Score where Miscellaneous=:imgName AND Label='img_push_lbl'")
     int getSentFlag(String imgName);
 
-    @Query("Select ResourceID from Score where StartDateTime=:imgName AND sentFlag=0 AND Label='img_push_lbl'")
+    @Query("Select ResourceID from Score where Miscellaneous=:imgName AND sentFlag=0 AND Label='img_push_lbl'")
     String getImgResId(String imgName);
 
     @Query("Select COUNT(sentFlag) from Score where sentFlag=0 AND Label='img_push_lbl'")
     int getUnpushedImageCount();
 
-    @Query("update Score set sentFlag=1 where StartDateTime=:imgName AND Label='img_push_lbl'")
+    @Query("update Score set sentFlag=1 where Miscellaneous=:imgName AND Label='img_push_lbl'")
     void setImgSentFlag(String imgName);
 
     @Query("Select MAX(ScoredMarks) from Score where StudentID=:stdID AND Label='RC-sessionTotalScore '")
@@ -98,6 +98,9 @@ public interface ScoreDao {
 
     @Query("select * from Score WHERE StudentID=:stdID AND Label LIKE :COS_Lbl ")
     List<Score> getImageQues(String stdID, String COS_Lbl);
+
+    @Query("select * from Score WHERE StudentID=:stdID AND Miscellaneous LIKE :lbl ")
+    List<Score> getImageQues2(String stdID, String lbl);
 
 
     @Query("Select count(distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01-','1-'),'02-','2-'),'03-','3-'),'04-','4-'),'05-','5-'),'06-','6-'),'07-','7-'),'08','8-'),'09-','9-')) as dates from Score sc where length(startdatetime)>5")

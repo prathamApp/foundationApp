@@ -113,7 +113,7 @@ public class WordWritingFragment extends Fragment
             GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());
 */
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START, resId, true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START, resId, " ");
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -303,7 +303,7 @@ public class WordWritingFragment extends Fragment
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END, resId, true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END, resId, " ");
     }
 
     @Override

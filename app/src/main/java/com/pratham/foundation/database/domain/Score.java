@@ -37,6 +37,8 @@ public class Score implements Serializable {
     private String Label;
     @ColumnInfo(name = "GroupId")
     private String GroupId;
+    @ColumnInfo(name = "Miscellaneous")
+    private String Miscellaneous;
     @ColumnInfo(name = "sentFlag")
     private int sentFlag;
 
@@ -55,6 +57,7 @@ public class Score implements Serializable {
                 ", StartDateTime='" + StartDateTime + '\'' +
                 ", EndDateTime='" + EndDateTime + '\'' +
                 ", GroupId='" + GroupId + '\'' +
+                ", Miscellaneous='" + Miscellaneous + '\'' +
                 ", Level=" + Level +
                 '}';
     }
@@ -170,5 +173,13 @@ public class Score implements Serializable {
 
     public void setLabel(String label) {
         Label = label;
+    }
+
+    public String getMiscellaneous() {
+        return Miscellaneous;
+    }
+
+    public void setMiscellaneous(String miscellaneous) {
+        Miscellaneous = miscellaneous;
     }
 }

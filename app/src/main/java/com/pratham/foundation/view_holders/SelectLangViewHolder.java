@@ -1,5 +1,7 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.pratham.foundation.ui.app_home.FragmentItemClicked;
 import com.pratham.foundation.ui.select_language_fragment.SelectLangContract;
 import com.pratham.foundation.utility.FC_Constants;
 
+import java.io.File;
 import java.util.Objects;
 
 public class SelectLangViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +65,9 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
         }
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);
-/*        File f;
+        File f;
+        String thumbPath = "" + contentList.getNodeServerImage();
+
         if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
                 contentList.getIsDownloaded().equalsIgnoreCase("true")) {
             if (contentList.isOnSDCard())
@@ -73,8 +78,7 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
                         "" + App_Thumbs_Path + contentList.getNodeImage());
             if (f.exists())
                 Objects.requireNonNull(content_image).setImageURI(Uri.fromFile(f));
-        } else {*/
-            String thumbPath = "" + contentList.getNodeServerImage();
+        } else {
             if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                     String fileName = contentList.getNodeServerImage()
@@ -93,7 +97,7 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
                     .setOldController(Objects.requireNonNull(content_image).getController())
                     .build();
             content_image.setController(controller);
-//        }
+        }
 
 
         rl_lang_select.setOnClickListener(new View.OnClickListener() {

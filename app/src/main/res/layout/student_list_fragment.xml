@@ -17,7 +17,7 @@
         android:text="Goto Sync"
         android:textColor="@color/white"
         android:textSize="@dimen/_10sdp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/version_tv"

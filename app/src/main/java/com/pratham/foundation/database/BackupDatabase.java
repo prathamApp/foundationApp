@@ -23,6 +23,7 @@ public class BackupDatabase {
     public static void backup(Context mContext) {
         try {
             File sd = new File(ApplicationClass.getStoragePath().getAbsolutePath()+"/PrathamBackups");
+//            File sd = new File(ApplicationClass.foundationPath+"/PrathamBackups");
             if(!sd.exists())
                 sd.mkdirs();
             if (sd.canWrite()) {

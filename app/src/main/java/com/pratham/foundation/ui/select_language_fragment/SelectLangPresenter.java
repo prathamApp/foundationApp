@@ -1,5 +1,14 @@
 package com.pratham.foundation.ui.select_language_fragment;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_BOARD_STRING;
+import static com.pratham.foundation.utility.FC_Constants.APP_BOARD_STRING_PI;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_STRING;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_STRING_PI;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.INTERNET_LANGUAGE_API;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_BROWSE_API;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -22,15 +31,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_BOARD_STRING;
-import static com.pratham.foundation.utility.FC_Constants.APP_BOARD_STRING_PI;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_STRING;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_STRING_PI;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.INTERNET_LANGUAGE_API;
-import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_BROWSE_API;
-import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 @EBean
 public class SelectLangPresenter implements SelectLangContract.SelectLangPresenter, API_Content_Result {
@@ -61,17 +61,10 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
     }
 
     @Override
-    public void getLanguage() {
+    public void getBoard() {
         boardList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootDetails(newRootParentId,
-/*                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/
                 "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
-//        langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(rootParentId);
         //fetch language from API
-        if (boardList.size() > 0)
-            langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(boardList.get(0).getNodeId(),
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
-                    FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
-
         if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
             //Checks if device is connected to raspberry pie
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
@@ -81,9 +74,27 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
             }
         }else {
             if (boardList.size() > 0) {
-                langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(boardList.get(0).getNodeId(),
-                        "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
-                        FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
+                view.setBoardList(boardList);
+            }else
+                view.connectToInternetDialog();
+        }
+
+    }
+    @Override
+    public void loadLanguages(String langId) {
+        langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(langId,
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                    FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
+
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            //Checks if device is connected to raspberry pie
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getBoardAPI_PI(APP_LANGUAGE_STRING_PI, RASPBERRY_PI_BROWSE_API);
+            } else {
+                api_content.getAPILanguage(APP_LANGUAGE_STRING, INTERNET_LANGUAGE_API, langId);
+            }
+        }else {
+            if (langList.size() > 0) {
                 view.updateLangList(langList);
                 view.notifyAdapter();
             }else
@@ -147,6 +158,7 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
                     for (int j = 0; j < langList.size(); j++) {
                         if (piContentList.get(i).getNodeId().equalsIgnoreCase(
                                 langList.get(j).getNodeId())) {
+                            langList.get(j).setIsDownloaded("true");
                             parentFound = true;
                         }
                     }
@@ -163,8 +175,22 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {}.getType();
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                if(serverContentList.size()>0)
-                    api_content.getAPILanguage(APP_LANGUAGE_STRING, INTERNET_LANGUAGE_API,serverContentList.get(0).getNodeId());
+                boolean borardFound = false;
+                for(int i=0;i<serverContentList.size(); i++) {
+                    serverContentList.get(i).setIsDownloaded("false");
+                    borardFound = false;
+                    for(int j=0; j<boardList.size();j++) {
+                        if(serverContentList.get(i).getNodeId().equalsIgnoreCase(boardList.get(j).getNodeId())) {
+                            borardFound = true;
+                            break;
+                        }
+                    }
+                    if(!borardFound)
+                        boardList.add(serverContentList.get(i));
+                }
+                view.setBoardList(boardList);
+//                if(serverContentList.size()>0)
+//                    api_content.getAPILanguage(APP_LANGUAGE_STRING, INTERNET_LANGUAGE_API,serverContentList.get(0).getNodeId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -175,9 +201,11 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
+                    serverContentList.get(i).setIsDownloaded("false");
                     for (int j = 0; j < langList.size(); j++) {
                         if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
                                 langList.get(j).getNodeId())) {
+                            langList.get(j).setIsDownloaded("true");
                             parentFound = true;
                         }
                     }

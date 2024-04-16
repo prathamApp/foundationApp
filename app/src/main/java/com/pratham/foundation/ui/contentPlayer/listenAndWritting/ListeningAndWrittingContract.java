@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ListeningAndWrittingContract {
 
-    public interface ListeningAndWrittingView {
+    interface ListeningAndWrittingView {
         void loadUI(List<ScienceQuestion> list);
     }
 
-    public interface ListeningAndWrittingPresenter {
+    interface ListeningAndWrittingPresenter {
 
         void fetchJsonData(String contentPath);
 
@@ -20,7 +20,7 @@ public interface ListeningAndWrittingContract {
 
         void addLearntWords(List<ScienceQuestion> listenAndWrittingModal, String imageName);
 
-        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label,String resId, boolean addInAssessment);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label,String resId, String misc);
 
      //   void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
         //   void setView(ListeningAndWrittingContract.ListeningAndWrittingView listeningAndWrittingView);

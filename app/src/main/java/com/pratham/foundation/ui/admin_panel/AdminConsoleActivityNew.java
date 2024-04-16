@@ -3,8 +3,8 @@ package com.pratham.foundation.ui.admin_panel;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.ui.admin_panel.fragment_login.AdminLoginFragment;
-import com.pratham.foundation.ui.admin_panel.fragment_login.AdminLoginFragment_;
+import com.pratham.foundation.ui.admin_panel.new_menu.New_Menu_Fragment;
+import com.pratham.foundation.ui.admin_panel.new_menu.New_Menu_Fragment_;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -18,8 +18,8 @@ public class AdminConsoleActivityNew extends BaseActivity {
 
     @AfterViews
     public void initialize() {
-        FC_Utility.showFragment(this, new AdminLoginFragment_(), R.id.frame_attendance,
-                null, AdminLoginFragment.class.getSimpleName());
+        FC_Utility.showFragment(this, new New_Menu_Fragment_(), R.id.frame_attendance,
+                null, New_Menu_Fragment.class.getSimpleName());
     }
 
     @Override

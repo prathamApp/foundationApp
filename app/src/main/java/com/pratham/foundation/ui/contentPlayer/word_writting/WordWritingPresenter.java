@@ -1,10 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.word_writting;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +11,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -210,10 +207,9 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     newResId = GameConstatnts.getString(resId, contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
-
-                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
-                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
-                    addImageOnly(resId, imageName);
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, newResId);
+//                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, "false");
+                    addImageOnly(resId, imageName,FC_Utility.getCurrentDateTime());
                 }
                 GameConstatnts.postScoreEvent(questionModel.size(), questionModel.size());
                 setCompletionPercentage();
@@ -226,7 +222,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
     }
 
     @Background
-    public void addImageOnly(String resId, String imageName) {
+    public void addImageOnly(String resId, String imageName, String stDate) {
         try {
             String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -241,10 +237,11 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
                     || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
                     : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
-            score.setStartDateTime(imageName);
+            score.setStartDateTime(stDate);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FC_Constants.currentLevel);
+            score.setMiscellaneous(imageName);
             score.setLabel(IMG_PUSH_LBL);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
@@ -254,7 +251,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, boolean addInAssessment) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, String misc) {
         try {
             String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -273,11 +270,12 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, currentLevel));
+            score.setMiscellaneous(misc);
             score.setLabel(Label);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && addInAssessment) {
+/*            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -293,7 +291,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
-            }
+            }*/
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

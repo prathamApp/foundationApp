@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,7 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 
 import com.google.gson.Gson;
 import com.hanks.htextview.typer.TyperTextView;
@@ -156,9 +154,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     private void hideSystemUI() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        SplashActivity.this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().getDecorView().setSystemUiVisibility(
+        SplashActivity.this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_LOW_PROFILE
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -296,6 +294,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
+        // ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+/*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (Environment.isExternalStorageManager()) {
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
@@ -320,6 +320,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 startActivityForResult(intent,46);
             }
         } else {
+*/
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -335,7 +336,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
             FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
             splashPresenter.createDatabase();
-    }
+//        }
 /*        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -361,6 +362,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SDCARD_LOCATION_CHOOSER) {
+/*
             if (data != null && data.getData() != null) {
                 Uri treeUri = data.getData();
                 final int takeFlags = data.getFlags()
@@ -368,18 +370,19 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 ApplicationClass.getInstance().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
                 DocumentFile rootFile = DocumentFile.fromTreeUri(ApplicationClass.getInstance(), treeUri);
-                Log.d("DocumentFile Path", "rootFile.getName() : "+ rootFile.getName());
-                Log.d("DocumentFile Path", "rootFile.getUri() : "+ rootFile.getUri());
+                Log.d("DocumentFile Path", "rootFile.getName() : " + rootFile.getName());
+                Log.d("DocumentFile Path", "rootFile.getUri() : " + rootFile.getUri());
 
 
                 splashPresenter.testCopyDataBase(rootFile);
+*/
 
 //                mHandler.sendEmptyMessage(SHOW_OTG_SELECT_DIALOG);
 //                new Handler().postDelayed(() -> {
 //                    new CopyDbToOTG().execute(treeUri);
 //                }, 500);
-            }
-        }else if (requestCode == 46) {
+//            }
+        } else if (requestCode == 46) {
             startApp();
         }
     }
@@ -654,6 +657,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     BlurPopupWindow updateApp;
     TextView tv_dialog;
     Button dia_btn_ok;
+
     @UiThread
     public void getUpdatedAppDialog() {
         //Allows to download language packages
@@ -705,7 +709,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void showBottomFragment() {
         try {
-            if(FastSave.getInstance().getString(FC_Constants.SERVER_APP_VERSION, "NA")
+            if (FastSave.getInstance().getString(FC_Constants.SERVER_APP_VERSION, "NA")
                     .equalsIgnoreCase(FC_Utility.getAppVerison())) {
                 FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, true);
             }

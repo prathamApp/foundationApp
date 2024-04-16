@@ -11,7 +11,7 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 @SuppressLint("AppCompatCustomView")
-public class SansTextViewBold extends TextView {
+public class SansTextVidewBold extends TextView {
 
     public SansTextViewBold(Context context) {
         super(context);

@@ -14,6 +14,8 @@ public interface SelectLangContract {
     interface SelectLangView{
         void updateLangList(List<ContentTable> langList);
 
+        void setBoardList(List<ContentTable> boardList);
+
         void connectToInternetDialog();
 
         void notifyAdapter();
@@ -28,7 +30,9 @@ public interface SelectLangContract {
     interface SelectLangPresenter {
         void setView(SelectLangContract.SelectLangView selectLangView);
 
-        void getLanguage();
+        void getBoard();
+
+        void loadLanguages(String langId);
     }
 
     interface LangItemClicked {

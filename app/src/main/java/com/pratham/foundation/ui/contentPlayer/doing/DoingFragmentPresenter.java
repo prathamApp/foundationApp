@@ -183,8 +183,10 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
                     queImageName = readingContentPath + questionModel.getPhotourl();
                 }
                 newResId = GameConstatnts.getString(resId, contentTitle, questionModel.getQid(), imageName, questionModel.getQuestion(), queImageName);
-                addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(), questionModel.getEndTime(), imageName, resId, true);
-                addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(), questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId, false);
+                addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0,
+                        questionModel.getStartTime(), questionModel.getEndTime(), imageName, resId, newResId);
+//                addScore(FC_Utility.getSubjectNo(),jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(),
+//                        questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId, "false");
                 addImageOnly(resId, imageName);
                 AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                 setCompletionPercentage();
@@ -200,7 +202,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, String misc) {
         try {
             String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -219,6 +221,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
             score.setLevel(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, currentLevel));
+            score.setMiscellaneous(misc);
             score.setLabel(Label);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
@@ -258,10 +261,11 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-            score.setStartDateTime(imageName);
+            score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FC_Constants.currentLevel);
+            score.setMiscellaneous(imageName);
             score.setLabel(IMG_PUSH_LBL);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);

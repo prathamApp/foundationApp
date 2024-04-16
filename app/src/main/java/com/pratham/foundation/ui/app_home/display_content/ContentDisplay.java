@@ -318,7 +318,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Click({R.id.iv_refresh})
     public void levelRefresh() {
         ApplicationClass.vibrator.vibrate(60);
-        onResume();
+        hideSystemUI();
+        showLoader();
+        presenter.getListData();
+        if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.INDIVIDUAL_MODE).equalsIgnoreCase(QR_GROUP_MODE))
+            presenter.getPerc(nodeId);
     }
 
 
@@ -333,8 +337,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 resumeCntr = 1;
             else {
                 hideSystemUI();
-                showLoader();
-                presenter.getListData();
+//                showLoader();
+//                presenter.getListData();
                 if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.INDIVIDUAL_MODE).equalsIgnoreCase(QR_GROUP_MODE))
                     presenter.getPerc(nodeId);
 //                notifyAdapter();

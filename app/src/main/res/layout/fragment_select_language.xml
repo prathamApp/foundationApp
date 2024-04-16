@@ -13,10 +13,12 @@
         android:layout_alignParentTop="true">
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/title_lang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:text="@string/select_language"
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_22sdp" />
@@ -31,6 +33,19 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="close_cross.json"
             app:lottie_loop="true" />
+
+        <Spinner
+            android:id="@+id/board_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/title_lang"
+            android:background="@drawable/gradient_spinner"
+            android:textAlignment="center" />
 
     </RelativeLayout>
 

@@ -216,9 +216,11 @@ public class PushDataBaseZipToServer {
             BackupDatabase.backup(context);
             String fielName = "FCZ_" + FC_RandomString.unique();
             String filePathStr = ApplicationClass.getStoragePath().toString()
+//            String filePathStr = ApplicationClass.foundationPath.toString()
                     + "/PrathamBackups/" + fielName; // file path to save
             // Type the path of the files in here
             File dir = new File(ApplicationClass.getStoragePath().toString() + "/PrathamBackups/");
+//            File dir = new File(ApplicationClass.foundationPath.toString() + "/PrathamBackups/");
             File[] db_files = dir.listFiles();
             Log.d("FC_RandomString", "DB ZIP NAME " + fielName);
             if (db_files != null) {
@@ -289,6 +291,7 @@ public class PushDataBaseZipToServer {
                                 @Override
                                 public void onError(ANError anError) {
                                     //Fail - Show dialog with failure message.
+                                    new File(filePathStr + ".zip").delete();
                                     Log.d("PushData", "Data push FAIL");
                                     Log.d("PushData", "ERROR  " + anError);
                                     pushSuccessfull = false;

@@ -89,7 +89,7 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
     public void displayContent() {
         ImageJsonObject imageJsonObject;
         try {
-            JSONObject jsonObj = new JSONObject(scoreDisp.getResourceID());
+            JSONObject jsonObj = new JSONObject(scoreDisp.getMiscellaneous());
             Gson gson = new Gson();
             imageJsonObject = gson.fromJson(jsonObj.toString(), ImageJsonObject.class);
 
