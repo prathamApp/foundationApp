@@ -1,28 +1,39 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+/*Major Version : API Changes , Adding new feature , Redesign the App ,
+ Increment the MAJOR after the MINOR version achieved the number 9*/
+ext.versionMajor = 1
+/*Minor Version : While adding a functionality , minor changes like color change or icon changes*/
+ext.versionMinor = 1
+/*Patch : Bug fixing*/
+ext.versionPatch = 2
+ext.minSdkVersion = 21
+
+private Integer generateVersionCode() {
+    return ext.minSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String  generateVersionName() {
+    return ext.versionMajor +"."+ ext.versionMinor +"."+ ext.versionPatch
+}
+
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.pratham.foundation"
-        minSdkVersion 21
+        minSdkVersion project.ext.minSdkVersion
         targetSdkVersion 33
-        versionCode 59
+        versionCode generateVersionCode()
         multiDexEnabled true
-        versionName "1.0.59"
+        versionName generateVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     packagingOptions {
-        exclude 'META-INF/rxjava.properties'
-        exclude 'META-INF/NOTICE' // will not include NOTICE file
-        exclude 'META-INF/LICENSE' // will not include LICENSE file
-        // as noted by @Vishnuvathsan you may also need to include
-        // variations on the file name. It depends on your dependencies.
-        // Some other common variations on notice and license file names
-        exclude 'META-INF/notice'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license'
-        exclude 'META-INF/license.txt'
+        resources {
+            excludes += ['META-INF/rxjava.properties', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/notice', 'META-INF/notice.txt', 'META-INF/license', 'META-INF/license.txt']
+        }
     }
     buildTypes {
         release {
@@ -30,15 +41,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
+    }
+    namespace 'com.pratham.foundation'
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
 }
 dependencies {
